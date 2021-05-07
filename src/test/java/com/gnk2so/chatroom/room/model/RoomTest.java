@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.gnk2so.chatroom.room.exception.FullRoomException;
 import com.gnk2so.chatroom.room.exception.AlreadyParticipateRoomException;
+import com.gnk2so.chatroom.room.exception.DontParticipateRoomException;
 import com.gnk2so.chatroom.user.mock.UserMock;
 import com.gnk2so.chatroom.user.model.User;
 
@@ -86,6 +87,15 @@ public class RoomTest {
 
         assertThrows(AlreadyParticipateRoomException.class, () -> {
             room.add(user);
+        });
+    }
+
+    @Test
+    public void shouldThrowDontParticipateRoomExceptionWhenTryToRemoveUserThatNotParticipatesRoom() {
+        User user = UserMock.build();
+        Room room = Room.publicRoom("Public");
+        assertThrows(DontParticipateRoomException.class, () -> {
+            room.remove(user);
         });
     }
 

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import com.gnk2so.chatroom.room.exception.FullRoomException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gnk2so.chatroom.room.exception.AlreadyParticipateRoomException;
+import com.gnk2so.chatroom.room.exception.DontParticipateRoomException;
 import com.gnk2so.chatroom.user.model.User;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -98,7 +99,11 @@ public class Room {
     }
 
     public void remove(User user) {
-        participants.remove(user);
+        if(hasParticipant(user)) {
+            participants.remove(user);
+        } else {
+            throw new DontParticipateRoomException();
+        }
     }
 
     public boolean hasParticipant(User user) {

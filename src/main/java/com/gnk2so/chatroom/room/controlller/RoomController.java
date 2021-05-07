@@ -138,11 +138,8 @@ public class RoomController extends BaseController {
     public ResponseEntity<Room> leaveRoom(@PathVariable("id") Long roomID) {
         User user = userService.findByEmail(getPrincipalName());
         Room room = roomService.findById(roomID);
-        if(room.hasParticipant(user)) {
-            room.remove(user);
-            roomService.save(room);
-            return ResponseEntity.noContent().build();
-        }
-        throw new DontParticipateRoomException();
+        room.remove(user);
+        roomService.save(room);
+        return ResponseEntity.noContent().build();
     }
 }
