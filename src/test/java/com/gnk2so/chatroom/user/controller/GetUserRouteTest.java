@@ -30,7 +30,7 @@ public class GetUserRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeOkAndUserWhenGetUserSuccefully() throws Exception {
+    public void shouldReturnStatusCodeOkAndUserDetailsWhenGetUserSuccefully() throws Exception {
 
         User user = repository.save(UserMock.buildSecured());
 

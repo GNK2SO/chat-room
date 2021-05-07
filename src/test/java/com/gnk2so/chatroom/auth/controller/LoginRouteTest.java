@@ -23,23 +23,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class LoginRouteTest extends ControllerTest {
 
+    private User user;
+    
+    private final String ROUTE = "/auth/login";
+
     @Autowired
     private UserRepository repository;
 
     @MockBean
     private JwtProvider jwtProvider;
 
-    private final String ROUTE = "/auth/login";
-
     @BeforeEach
     public void setup() {
+        user = UserMock.build();
         repository.deleteAll();
     }
+    
 
     @Test
     public void shouldReturnStatusCodeOkAndTokensWhenAuthenticateSuccessfully() throws Exception {
-        
-        User user = UserMock.build();
+
         LoginRequest content = LoginRequestMock.build(user.getEmail(), user.getPassword());
 
         repository.save(UserMock.buildSecuredFrom(user));
@@ -55,8 +58,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithNullEmail() throws Exception {
-        
-        User user = UserMock.build();
+
         LoginRequest content = LoginRequestMock.build(null, user.getPassword());
 
         doPostRequest(ROUTE, content)
@@ -67,8 +69,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithInvalidEmail() throws Exception {
-        
-        User user = UserMock.build();
+
         String bigEmail = "ThisEmailHasLengthGreaterThanSixtyFourCharacters.gnk2so@email.com.br";
         LoginRequest content = LoginRequestMock.build(bigEmail, user.getPassword());
 
@@ -80,8 +81,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithNullPassword() throws Exception {
-        
-        User user = UserMock.build();
+
         LoginRequest content = LoginRequestMock.build(user.getEmail(), null);
 
         doPostRequest(ROUTE, content)
@@ -92,8 +92,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithPasswordWithLenghtLowerThanSix() throws Exception {
-        
-        User user = UserMock.build();
+
         LoginRequest content = LoginRequestMock.build(user.getEmail(), "FOUR");
 
         doPostRequest(ROUTE, content)
@@ -104,8 +103,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithPasswordWithLenghtGreaterThanTwentyFour() throws Exception {
-        
-        User user = UserMock.build();
+
         String bigPassword = "ThisPasswordIsGreaterThenTwentyFourCharacters";
         LoginRequest content = LoginRequestMock.build(user.getEmail(), bigPassword);
 
@@ -117,8 +115,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithEmailLengthGreaterThanSixtyFour() throws Exception {
-        
-        User user = UserMock.build();
+
         LoginRequest content = LoginRequestMock.build("invalid.email@", user.getPassword());
 
         doPostRequest(ROUTE, content)
@@ -129,8 +126,7 @@ public class LoginRouteTest extends ControllerTest {
 
     @Test
     public void shouldReturnStatusCodeUnauthorizedAndErroMessageWhenAuthenticationFailure() throws Exception {
-        
-        User user = UserMock.build();
+
         LoginRequest content = LoginRequestMock.build(user.getEmail(), user.getPassword());
 
         doPostRequest(ROUTE, content)

@@ -1,5 +1,7 @@
 package com.gnk2so.chatroom.room.controlller;
 
+import static java.lang.String.format;
+
 import javax.validation.Valid;
 
 import com.gnk2so.chatroom.commons.BaseController;
@@ -56,7 +58,7 @@ public class RoomController extends BaseController {
         User user = userService.findByEmail(getPrincipalName());
         Room room = request.getRoom(user);
         Room savedRoom = roomService.save(room);
-        String path = String.format("/rooms/%s", savedRoom.getChannel());
+        String path = format("/rooms/%s", savedRoom.getChannel());
         return ResponseEntity.created(getURI(path)).build();
     }
 
@@ -76,7 +78,7 @@ public class RoomController extends BaseController {
         User user = userService.findByEmail(getPrincipalName());
         Room room = request.getRoom(user);
         Room savedRoom = roomService.save(room);
-        String path = String.format("/rooms/%s", savedRoom.getChannel());
+        String path = format("/rooms/%s", savedRoom.getChannel());
         return ResponseEntity.created(getURI(path)).build();
     }
 
