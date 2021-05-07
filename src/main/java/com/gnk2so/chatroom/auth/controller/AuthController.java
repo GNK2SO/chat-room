@@ -8,7 +8,6 @@ import com.gnk2so.chatroom.auth.service.AuthService;
 import com.gnk2so.chatroom.commons.BaseController;
 import com.gnk2so.chatroom.provider.jwt.JwtProvider;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,17 +20,16 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "Authentication")
+@RequiredArgsConstructor
 public class AuthController extends BaseController {
     
-    @Autowired
-    private AuthService service;
-
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final AuthService service;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/login")
     @ApiOperation(value = "Authenticate user")

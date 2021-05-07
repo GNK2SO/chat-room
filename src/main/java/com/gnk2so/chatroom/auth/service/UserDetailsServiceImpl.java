@@ -8,7 +8,6 @@ import com.gnk2so.chatroom.user.exception.UserNotFoundException;
 import com.gnk2so.chatroom.user.model.User;
 import com.gnk2so.chatroom.user.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

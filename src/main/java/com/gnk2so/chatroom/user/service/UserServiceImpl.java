@@ -5,14 +5,15 @@ import com.gnk2so.chatroom.user.exception.UserNotFoundException;
 import com.gnk2so.chatroom.user.model.User;
 import com.gnk2so.chatroom.user.repository.UserRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
     @Override
     public User save(User user) {

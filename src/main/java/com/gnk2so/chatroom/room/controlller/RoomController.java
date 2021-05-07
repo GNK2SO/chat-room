@@ -15,7 +15,6 @@ import com.gnk2so.chatroom.room.service.RoomService;
 import com.gnk2so.chatroom.user.model.User;
 import com.gnk2so.chatroom.user.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,17 +29,16 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/rooms")
 @Api(tags = "Rooms")
+@RequiredArgsConstructor
 public class RoomController extends BaseController {
     
-    @Autowired
-    private RoomService roomService;
-
-    @Autowired
-    private UserService userService;
+    private final RoomService roomService;
+    private final UserService userService;
 
     
     @PostMapping("/public")

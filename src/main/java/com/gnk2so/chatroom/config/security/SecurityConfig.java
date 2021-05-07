@@ -8,7 +8,6 @@ import static org.springframework.http.HttpMethod.POST;
 import com.gnk2so.chatroom.config.doc.SwaggerConfig;
 import com.gnk2so.chatroom.provider.jwt.JwtProvider;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,15 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService service;
-
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final UserDetailsService service;
+    private final JwtProvider jwtProvider;
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {

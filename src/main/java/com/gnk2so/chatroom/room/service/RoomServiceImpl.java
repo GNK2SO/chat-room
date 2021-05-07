@@ -4,14 +4,15 @@ import com.gnk2so.chatroom.room.exception.RoomNotFoundException;
 import com.gnk2so.chatroom.room.model.Room;
 import com.gnk2so.chatroom.room.repository.RoomRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
 
-    @Autowired
-    private RoomRepository repository;
+    private final RoomRepository repository;
 
     @Override
     public Room save(Room room) {
