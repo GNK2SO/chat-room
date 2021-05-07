@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gnk2so.chatroom.provider.jwt.JwtProvider;
@@ -43,6 +44,23 @@ public class ControllerTest {
     protected ResultActions doPostRequest(String url, String token, Object content) throws Exception {
         return mockMvc.perform(
             post(url)
+                .contentType(MediaType.APPLICATION_JSON)  
+                .header("Authorization", token)
+                .content(serialize(content))
+        );
+    }
+
+    protected ResultActions doPutRequest(String url, String token) throws Exception {
+        return mockMvc.perform(
+            put(url)
+                .contentType(MediaType.APPLICATION_JSON)  
+                .header("Authorization", token)
+        );
+    }
+
+    protected ResultActions doPutRequest(String url, String token, Object content) throws Exception {
+        return mockMvc.perform(
+            put(url)
                 .contentType(MediaType.APPLICATION_JSON)  
                 .header("Authorization", token)
                 .content(serialize(content))

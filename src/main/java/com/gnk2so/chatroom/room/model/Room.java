@@ -16,8 +16,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.gnk2so.chatroom.room.exception.FullRoomException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gnk2so.chatroom.room.exception.AlreadyParticipateRoomException;
 import com.gnk2so.chatroom.user.model.User;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +44,7 @@ public class Room {
     @Column(nullable = false, length = 24)
     private String title;
 
+    @JsonIgnore
     @Column(length = 64)
     private String password;
 
@@ -68,7 +72,7 @@ public class Room {
     public static Room privateRoom(String title, String password) {
         return Room.builder()
             .title(title)
-            .password(password)
+            .password(new BCryptPasswordEncoder().encode(password))
             .type(RoomType.PRIVATE)
             .participants(new ArrayList<>())
             .channel(UUID.randomUUID().toString())
@@ -95,6 +99,14 @@ public class Room {
 
     public void remove(User user) {
         participants.remove(user);
+    }
+
+    public boolean hasParticipant(User user) {
+        return participants.contains(user);
+    }
+
+    public boolean validate(String password) {
+        return new BCryptPasswordEncoder().matches(password, this.password);
     }
     
 }

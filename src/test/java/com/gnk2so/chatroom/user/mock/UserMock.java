@@ -61,7 +61,7 @@ public class UserMock {
             User user = User.builder()
                 .id(Long.valueOf(index))
                 .name("Mocked User " + index)
-                .email("mocked.user@email.com")
+                .email(String.format("mocked.user.%d@email.com", index))
                 .password("p@ssw0rd")
                 .build();
             users.add(user);

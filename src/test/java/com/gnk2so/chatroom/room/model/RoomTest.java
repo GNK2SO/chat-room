@@ -1,6 +1,7 @@
 package com.gnk2so.chatroom.room.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -88,4 +89,15 @@ public class RoomTest {
         });
     }
 
+    @Test
+    public void shouldReturnTrueWhenRoomValidatePassword() {
+        Room room = Room.privateRoom("Public", "P@ssw0rd");
+        assertTrue(room.validate("P@ssw0rd"));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenRoomNotValidatePassword() {
+        Room room = Room.privateRoom("Public", "P@ssw0rd");
+        assertFalse(room.validate("WrongP@ssw0rd"));
+    }
 }

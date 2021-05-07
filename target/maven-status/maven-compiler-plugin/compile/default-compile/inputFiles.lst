@@ -7,7 +7,9 @@
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/auth/controller/request/LoginRequest.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/provider/jwt/JwtProvider.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/room/repository/RoomRepository.java
+/home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/room/exception/DontParticipateRoomException.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/room/controlller/RoomController.java
+/home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/room/controlller/request/JoinRoomRequest.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/config/doc/SwaggerConfig.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/user/controller/UserController.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/auth/controller/AuthController.java
@@ -21,6 +23,7 @@
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/auth/exception/InvalidCredentialsException.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/user/exception/AlreadyUsedEmailException.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/config/security/CustomAccessHandler.java
+/home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/room/exception/InvalidRoomPasswordException.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/user/repository/UserRepository.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/auth/service/AuthServiceImpl.java
 /home/gabriel/workspace/chat-room/api/src/main/java/com/gnk2so/chatroom/ChatRoomApplication.java

@@ -51,8 +51,7 @@ public class UserController {
     @GetMapping("/me")
     @ApiOperation(
         value = "Get user details",
-        authorizations = { @Authorization(value="JWT") }
-    )
+        authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
         @ApiResponse(code = 200, message = "Ok"),
         @ApiResponse(code = 401, message = "Invalid/Expired token"),

@@ -23,5 +23,11 @@ public class RoomServiceImpl implements RoomService {
         return repository.findByChannel(channel)
             .orElseThrow(RoomNotFoundException::new);
     }
+
+    @Override
+    public Room findById(long id) {
+        return repository.findById(id)
+            .orElseThrow(RoomNotFoundException::new);
+    }
     
 }

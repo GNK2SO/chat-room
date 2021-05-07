@@ -1,14 +1,22 @@
 package com.gnk2so.chatroom.config.web;
 
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.gnk2so.chatroom.auth.exception.InvalidCredentialsException;
+import com.gnk2so.chatroom.room.exception.AlreadyParticipateRoomException;
+import com.gnk2so.chatroom.room.exception.DontParticipateRoomException;
+import com.gnk2so.chatroom.room.exception.FullRoomException;
+import com.gnk2so.chatroom.room.exception.InvalidRoomPasswordException;
+import com.gnk2so.chatroom.room.exception.RoomNotFoundException;
 import com.gnk2so.chatroom.user.exception.AlreadyUsedEmailException;
+import com.gnk2so.chatroom.user.exception.UserNotFoundException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -35,6 +43,7 @@ public class WebExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
+    
     @ExceptionHandler(value = {
         InvalidCredentialsException.class
     })
@@ -43,11 +52,35 @@ public class WebExceptionHandler {
         return ResponseEntity.status(UNAUTHORIZED.value()).body(response);
     }
 
+
     @ExceptionHandler(value = {
-        AlreadyUsedEmailException.class
+        DontParticipateRoomException.class,
+        InvalidRoomPasswordException.class,
+        FullRoomException.class
+    })
+    public ResponseEntity<ErrorResponse> forbidden(RuntimeException exception) {
+        ErrorResponse response = new ErrorResponse(FORBIDDEN.value(), exception.getMessage());
+        return ResponseEntity.status(FORBIDDEN.value()).body(response);
+    }
+
+
+    @ExceptionHandler(value = {
+        RoomNotFoundException.class,
+        UserNotFoundException.class
+    })
+    public ResponseEntity<ErrorResponse> notFound(RuntimeException exception) {
+        ErrorResponse response = new ErrorResponse(NOT_FOUND.value(), exception.getMessage());
+        return ResponseEntity.status(NOT_FOUND.value()).body(response);
+    }
+
+
+    @ExceptionHandler(value = {
+        AlreadyUsedEmailException.class,
+        AlreadyParticipateRoomException.class
     })
     public ResponseEntity<ErrorResponse> conflict(RuntimeException exception) {
         ErrorResponse response = new ErrorResponse(CONFLICT.value(), exception.getMessage());
         return ResponseEntity.status(CONFLICT.value()).body(response);
     }
+
 }

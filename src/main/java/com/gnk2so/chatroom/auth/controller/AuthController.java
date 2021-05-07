@@ -51,8 +51,7 @@ public class AuthController {
     @GetMapping("/refresh")
     @ApiOperation(
         value = "Get new tokens",
-        authorizations = { @Authorization(value="JWT") }
-    )
+        authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 401, message = "Invalid/Expired token"),

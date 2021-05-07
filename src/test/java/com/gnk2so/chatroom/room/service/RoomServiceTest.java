@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -68,6 +69,26 @@ public class RoomServiceTest {
 
         assertThrows(RoomNotFoundException.class, () -> {
             service.findByChannel("CHANNEL");
+        });
+    }
+
+
+    @Test
+    public void shouldReturnRoomWhenFindRoomByIdSuccessfully() {
+        Room room = Room.publicRoom("Public");
+        when(repository.findById(anyLong())).thenReturn(Optional.of(room));
+
+        Room gettedRoom = service.findById(1L);
+
+        assertEquals(room, gettedRoom);
+    }
+
+    @Test
+    public void shouldThrowRoomNotFoundExceptionWhenFindRoomByIdSuccessfully() {
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(RoomNotFoundException.class, () -> {
+            service.findById(1L);
         });
     }
 }
