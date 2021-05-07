@@ -6,8 +6,7 @@ import javax.validation.Valid;
 
 import com.gnk2so.chatroom.commons.BaseController;
 import com.gnk2so.chatroom.room.controlller.request.JoinRoomRequest;
-import com.gnk2so.chatroom.room.controlller.request.SavePrivateRoomRequest;
-import com.gnk2so.chatroom.room.controlller.request.SavePublicRoomRequest;
+import com.gnk2so.chatroom.room.controlller.request.SaveRoomRequest;
 import com.gnk2so.chatroom.room.exception.DontParticipateRoomException;
 import com.gnk2so.chatroom.room.exception.InvalidRoomPasswordException;
 import com.gnk2so.chatroom.room.model.Room;
@@ -41,17 +40,17 @@ public class RoomController extends BaseController {
     private final UserService userService;
 
     
-    @PostMapping("/public")
+    @PostMapping
     @ApiOperation(
-        value = "Create new public chat",
+        value = "Create new room",
         authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
         @ApiResponse(code = 201, message = "Created"),
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 401, message = "Invalid/Expired token"),
     })
-    public ResponseEntity<Void> savePublicRoom(
-        @Valid @RequestBody SavePublicRoomRequest request
+    public ResponseEntity<Void> saveRoom(
+        @Valid @RequestBody SaveRoomRequest request
     ) {
         User user = userService.findByEmail(getPrincipalName());
         Room room = request.getRoom(user);
@@ -59,27 +58,6 @@ public class RoomController extends BaseController {
         String path = format("/rooms/%s", savedRoom.getChannel());
         return ResponseEntity.created(getURI(path)).build();
     }
-
-
-    @PostMapping("/private")
-    @ApiOperation(
-        value = "Create new private chat",
-        authorizations = { @Authorization(value="JWT") })
-    @ApiResponses({
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 400, message = "Bad Request"),
-        @ApiResponse(code = 401, message = "Invalid/Expired token"),
-    })
-    public ResponseEntity<Void> savePrivateRoom(
-        @Valid @RequestBody SavePrivateRoomRequest request
-    ) {
-        User user = userService.findByEmail(getPrincipalName());
-        Room room = request.getRoom(user);
-        Room savedRoom = roomService.save(room);
-        String path = format("/rooms/%s", savedRoom.getChannel());
-        return ResponseEntity.created(getURI(path)).build();
-    }
-
 
     @PutMapping("/{id}/join")
     @ApiOperation(

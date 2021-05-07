@@ -1,5 +1,7 @@
 package com.gnk2so.chatroom.room.controlller.request;
 
+import static org.apache.logging.log4j.util.Strings.isBlank;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,20 +18,26 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavePrivateRoomRequest {
+public class SaveRoomRequest {
 
     @NotNull
     @Size(min = 6, max = 24)
     private String title;
 
-    @NotNull
-    @Size(min = 6, max = 16)
+    @Size(max = 16, message = "size must be lower than 16")
     private String password;
 
     public Room getRoom(User user) {
-        Room room = Room.privateRoom(title, encryptedPassword());
+        Room room = getRoom();
         room.add(user);
         return room;
+    }
+
+    private Room getRoom() {
+        if(isBlank(password)) {
+            return Room.publicRoom(title);
+        } 
+        return Room.privateRoom(title, encryptedPassword());
     }
     
     public String encryptedPassword() {
