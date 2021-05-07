@@ -54,7 +54,7 @@ public class LoginRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenSendRequestWithNullEmail() throws Exception {
+    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithNullEmail() throws Exception {
         
         User user = UserMock.build();
         LoginRequest content = LoginRequestMock.build(null, user.getPassword());
@@ -66,7 +66,7 @@ public class LoginRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenSendRequestWithInvalidEmail() throws Exception {
+    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithInvalidEmail() throws Exception {
         
         User user = UserMock.build();
         String bigEmail = "ThisEmailHasLengthGreaterThanSixtyFourCharacters.gnk2so@email.com.br";
@@ -79,7 +79,7 @@ public class LoginRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenSendRequestWithNullPassword() throws Exception {
+    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithNullPassword() throws Exception {
         
         User user = UserMock.build();
         LoginRequest content = LoginRequestMock.build(user.getEmail(), null);
@@ -91,7 +91,7 @@ public class LoginRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenSendRequestWithPasswordWithLenghtLowerThanSix() throws Exception {
+    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithPasswordWithLenghtLowerThanSix() throws Exception {
         
         User user = UserMock.build();
         LoginRequest content = LoginRequestMock.build(user.getEmail(), "FOUR");
@@ -103,7 +103,7 @@ public class LoginRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenSendRequestWithPasswordWithLenghtGreaterThanTwentyFour() throws Exception {
+    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithPasswordWithLenghtGreaterThanTwentyFour() throws Exception {
         
         User user = UserMock.build();
         String bigPassword = "ThisPasswordIsGreaterThenTwentyFourCharacters";
@@ -116,7 +116,7 @@ public class LoginRouteTest extends ControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenSendRequestWithEmailLengthGreaterThanSixtyFour() throws Exception {
+    public void shouldReturnStatusCodeBadRequestAndErroMessageWhenReceiveRequestWithEmailLengthGreaterThanSixtyFour() throws Exception {
         
         User user = UserMock.build();
         LoginRequest content = LoginRequestMock.build("invalid.email@", user.getPassword());

@@ -1,10 +1,8 @@
 package com.gnk2so.chatroom.user.controller;
 
-import java.net.URI;
-import java.security.Principal;
-
 import javax.validation.Valid;
 
+import com.gnk2so.chatroom.commons.BaseController;
 import com.gnk2so.chatroom.user.controller.request.SaveUserRequest;
 import com.gnk2so.chatroom.user.model.User;
 import com.gnk2so.chatroom.user.service.UserService;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +24,7 @@ import io.swagger.annotations.Authorization;
 @RestController
 @RequestMapping("/users")
 @Api(tags = "Users")
-public class UserController {
+public class UserController extends BaseController {
     
     @Autowired
     private UserService service;
@@ -39,13 +36,9 @@ public class UserController {
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 409, message = "Already used email"),
     })
-    public ResponseEntity<Void> saveUser(
-        @Valid @RequestBody SaveUserRequest request,
-        UriComponentsBuilder uriBuilder
-    ) {
+    public ResponseEntity<Void> saveUser( @Valid @RequestBody SaveUserRequest request ) {
         service.save(request.getUser());
-        URI uri = uriBuilder.path("/users/me").build().toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(getURI("/users/me")).build();
     }
 
     @GetMapping("/me")
@@ -57,8 +50,8 @@ public class UserController {
         @ApiResponse(code = 401, message = "Invalid/Expired token"),
         @ApiResponse(code = 403, message = "Don't have permission"),
     })
-    public ResponseEntity<User> getUser(Principal principal) {
-        User user  = service.findByEmail(principal.getName());
+    public ResponseEntity<User> getUser() {
+        User user  = service.findByEmail(getPrincipalName());
         return ResponseEntity.ok(user);
     }
 

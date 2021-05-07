@@ -1,10 +1,8 @@
 package com.gnk2so.chatroom.room.controlller;
 
-import java.net.URI;
-import java.security.Principal;
-
 import javax.validation.Valid;
 
+import com.gnk2so.chatroom.commons.BaseController;
 import com.gnk2so.chatroom.room.controlller.request.JoinRoomRequest;
 import com.gnk2so.chatroom.room.controlller.request.SavePrivateRoomRequest;
 import com.gnk2so.chatroom.room.controlller.request.SavePublicRoomRequest;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +32,7 @@ import io.swagger.annotations.Authorization;
 @RestController
 @RequestMapping("/rooms")
 @Api(tags = "Rooms")
-public class RoomController {
+public class RoomController extends BaseController {
     
     @Autowired
     private RoomService roomService;
@@ -54,16 +51,13 @@ public class RoomController {
         @ApiResponse(code = 401, message = "Invalid/Expired token"),
     })
     public ResponseEntity<Void> savePublicRoom(
-        @Valid @RequestBody SavePublicRoomRequest request,
-        Principal principal,
-        UriComponentsBuilder uriBuilder
+        @Valid @RequestBody SavePublicRoomRequest request
     ) {
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByEmail(getPrincipalName());
         Room room = request.getRoom(user);
         Room savedRoom = roomService.save(room);
         String path = String.format("/rooms/%s", savedRoom.getChannel());
-        URI uri = uriBuilder.path(path).build().toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(getURI(path)).build();
     }
 
 
@@ -77,16 +71,13 @@ public class RoomController {
         @ApiResponse(code = 401, message = "Invalid/Expired token"),
     })
     public ResponseEntity<Void> savePrivateRoom(
-        @Valid @RequestBody SavePrivateRoomRequest request,
-        Principal principal,
-        UriComponentsBuilder uriBuilder
+        @Valid @RequestBody SavePrivateRoomRequest request
     ) {
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByEmail(getPrincipalName());
         Room room = request.getRoom(user);
         Room savedRoom = roomService.save(room);
         String path = String.format("/rooms/%s", savedRoom.getChannel());
-        URI uri = uriBuilder.path(path).build().toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(getURI(path)).build();
     }
 
 
@@ -102,10 +93,9 @@ public class RoomController {
     })
     public ResponseEntity<Room> joinRoom(
         @RequestBody JoinRoomRequest request,
-        @PathVariable("id") Long roomID,
-        Principal principal
+        @PathVariable("id") Long roomID
     ) {
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByEmail(getPrincipalName());
         Room room = roomService.findById(roomID);
         if(room.isPublic() || room.validate(request.getPassword())) {
             room.add(user);
@@ -126,11 +116,8 @@ public class RoomController {
         @ApiResponse(code = 403, message = "Don't have permission"),
         @ApiResponse(code = 404, message = "Not Found"),
     })
-    public ResponseEntity<Room> savePublicRoom(
-        @PathVariable String channel,
-        Principal principal
-    ) {
-        User user = userService.findByEmail(principal.getName());
+    public ResponseEntity<Room> getRoomDetails(@PathVariable String channel) {
+        User user = userService.findByEmail(getPrincipalName());
         Room room = roomService.findByChannel(channel);
         if(room.hasParticipant(user)) {
             return ResponseEntity.ok(room);
@@ -148,11 +135,8 @@ public class RoomController {
         @ApiResponse(code = 403, message = "Don't have permission"),
         @ApiResponse(code = 404, message = "Not Found"),
     })
-    public ResponseEntity<Room> leaveRoom(
-        @PathVariable("id") Long roomID,
-        Principal principal
-    ) {
-        User user = userService.findByEmail(principal.getName());
+    public ResponseEntity<Room> leaveRoom(@PathVariable("id") Long roomID) {
+        User user = userService.findByEmail(getPrincipalName());
         Room room = roomService.findById(roomID);
         if(room.hasParticipant(user)) {
             room.remove(user);

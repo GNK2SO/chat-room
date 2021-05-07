@@ -1,12 +1,11 @@
 package com.gnk2so.chatroom.auth.controller;
 
-import java.security.Principal;
-
 import javax.validation.Valid;
 
 import com.gnk2so.chatroom.auth.controller.request.LoginRequest;
 import com.gnk2so.chatroom.auth.controller.response.AuthResponse;
 import com.gnk2so.chatroom.auth.service.AuthService;
+import com.gnk2so.chatroom.commons.BaseController;
 import com.gnk2so.chatroom.provider.jwt.JwtProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import io.swagger.annotations.Authorization;
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "Authentication")
-public class AuthController {
+public class AuthController extends BaseController {
     
     @Autowired
     private AuthService service;
@@ -57,9 +56,9 @@ public class AuthController {
         @ApiResponse(code = 401, message = "Invalid/Expired token"),
         @ApiResponse(code = 403, message = "Don't have permission"),
     })
-    public ResponseEntity<AuthResponse> refreshTokens(Principal principal) {
-        String authToken = jwtProvider.createAuthToken(principal.getName());
-        String refreshToken = jwtProvider.createRefreshToken(principal.getName());
+    public ResponseEntity<AuthResponse> refreshTokens() {
+        String authToken = jwtProvider.createAuthToken(getPrincipalName());
+        String refreshToken = jwtProvider.createRefreshToken(getPrincipalName());
         return ResponseEntity.ok().body(new AuthResponse(authToken, refreshToken));
     }
 
