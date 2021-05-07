@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.gnk2so.chatroom.room.controller.LeaveRoomRouteTest
--------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.985 s - in com.gnk2so.chatroom.room.controller.LeaveRoomRouteTest

@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.gnk2so.chatroom.room.controller.SavePublicRoomRouteTest
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.55 s - in com.gnk2so.chatroom.room.controller.SavePublicRoomRouteTest
