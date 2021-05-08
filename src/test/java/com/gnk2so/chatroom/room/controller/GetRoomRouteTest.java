@@ -38,7 +38,7 @@ public class GetRoomRouteTest extends RoomControllerTest {
 
     
     @Test
-    public void shouldReturnStatusCodeUnauthorizedWhenTriesGetRoomWithEmptyBearer() throws Exception {
+    public void shouldReturnStatusCodeUnauthorizedWhenTryToGetRoomWithEmptyBearer() throws Exception {
         String URL = String.format(ROUTE, "CHANNEL");
 
         doGetRequest(URL, "")
@@ -48,7 +48,7 @@ public class GetRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeUnauthorizedWhenTriesGetRoomWithInvalidBearer() throws Exception {
+    public void shouldReturnStatusCodeUnauthorizedWhenTryToGetRoomWithInvalidBearer() throws Exception {
         String URL = String.format(ROUTE, "CHANNEL");
 
         doGetRequest(URL, "Bearer 13456")
@@ -59,7 +59,7 @@ public class GetRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenTriesGetRoomWithRefreshToken() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenTryToGetRoomWithRefreshToken() throws Exception {
         
         String URL = String.format(ROUTE, "CHANNEL");
 
@@ -70,7 +70,7 @@ public class GetRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenUserTriesGetsRoomThatNotParticipates() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenUserTryToGetsRoomThatNotParticipates() throws Exception {
         
         Room room = roomRepository.save(Room.publicRoom("Dev Room"));
         String URL = String.format(ROUTE, room.getChannel());
@@ -82,7 +82,7 @@ public class GetRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeNotFoundWhenUserTriesGetsNonExistentRoom() throws Exception {
+    public void shouldReturnStatusCodeNotFoundWhenUserTryToGetsNonExistentRoom() throws Exception {
         
         String URL = String.format(ROUTE, "CHANNEL");
 

@@ -31,7 +31,7 @@ public class LeaveRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeUnauthorizedWhenTriesLeaveRoomWithEmptyBearer() throws Exception {
+    public void shouldReturnStatusCodeUnauthorizedWhenTryToLeaveRoomWithEmptyBearer() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, "")
@@ -41,7 +41,7 @@ public class LeaveRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeUnauthorizedWhenTriesLeaveRoomWithInvalidBearer() throws Exception {
+    public void shouldReturnStatusCodeUnauthorizedWhenTryToLeaveRoomWithInvalidBearer() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, "Bearer 13456")
@@ -51,7 +51,7 @@ public class LeaveRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenTriesLeaveRoomWithRefreshToken() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenTryToLeaveRoomWithRefreshToken() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, refreshToken(user.getEmail()))
@@ -62,7 +62,7 @@ public class LeaveRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenUserTriesLeaveRoomThatNotParticipate() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenUserTryToLeaveRoomThatNotParticipate() throws Exception {
         Room room = roomRepository.save(Room.publicRoom("Dev Room"));
         String URL = String.format(ROUTE, room.getId());
 
@@ -74,7 +74,7 @@ public class LeaveRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeNotFoundWhenUserTriesLeaveNonExistentRoom() throws Exception {
+    public void shouldReturnStatusCodeNotFoundWhenUserTryToLeaveNonExistentRoom() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, authToken)

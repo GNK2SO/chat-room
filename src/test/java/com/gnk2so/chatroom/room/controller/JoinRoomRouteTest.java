@@ -38,7 +38,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeUnauthorizedWhenTriesJoinRoomWithEmptyBearer() throws Exception {
+    public void shouldReturnStatusCodeUnauthorizedWhenTryToJoinRoomWithEmptyBearer() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, "", JoinRoomRequestMock.build())
@@ -48,7 +48,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeUnauthorizedWhenTriesGetRoomWithInvalidBearer() throws Exception {
+    public void shouldReturnStatusCodeUnauthorizedWhenTryToGetRoomWithInvalidBearer() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, "Bearer 13456", JoinRoomRequestMock.build())
@@ -58,7 +58,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenTriesGetRoomWithRefreshToken() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenTryToGetRoomWithRefreshToken() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, refreshToken(user.getEmail()), JoinRoomRequestMock.build())
@@ -69,7 +69,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenUserTriesJoinPrivateRoomSendingInvalidPassword() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenUserTryToJoinPrivateRoomSendingInvalidPassword() throws Exception {
         Room room = roomRepository.save(Room.privateRoom("Dev Room", "P@ssw0rd"));
         String URL = String.format(ROUTE, room.getId());
         JoinRoomRequest request = JoinRoomRequestMock.build("WrongPassword");
@@ -82,7 +82,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeForbiddenWhenUserTriesJoinFullRoom() throws Exception {
+    public void shouldReturnStatusCodeForbiddenWhenUserTryToJoinFullRoom() throws Exception {
         List<User> users = userRepository.saveAll(UserMock.buildList(11));
         Room room = roomRepository.save(RoomMock.publicRoom("Dev Room", users.subList(0, 10)));
         String URL = String.format(ROUTE, room.getId());
@@ -95,7 +95,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeNotFoundWhenUserTriesJoinNonExistentRoom() throws Exception {
+    public void shouldReturnStatusCodeNotFoundWhenUserTryToJoinNonExistentRoom() throws Exception {
         String URL = String.format(ROUTE, 1L);
 
         doPutRequest(URL, authToken, JoinRoomRequestMock.build())
@@ -106,7 +106,7 @@ public class JoinRoomRouteTest extends RoomControllerTest {
 
 
     @Test
-    public void shouldReturnStatusCodeConflictWhenUserTriesJoinRoomThatAlreadyParticipates() throws Exception {
+    public void shouldReturnStatusCodeConflictWhenUserTryToJoinRoomThatAlreadyParticipates() throws Exception {
         Room room = roomRepository.save(RoomMock.publicRoom("Dev Room", user));
         String URL = String.format(ROUTE, room.getId());
 
