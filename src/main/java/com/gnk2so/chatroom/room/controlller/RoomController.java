@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import javax.validation.Valid;
 
 import com.gnk2so.chatroom.commons.BaseController;
+import com.gnk2so.chatroom.room.controlller.filter.PageRoomFilter;
 import com.gnk2so.chatroom.room.controlller.request.JoinRoomRequest;
 import com.gnk2so.chatroom.room.controlller.request.SaveRoomRequest;
 import com.gnk2so.chatroom.room.exception.DontParticipateRoomException;
@@ -14,6 +15,7 @@ import com.gnk2so.chatroom.room.service.RoomService;
 import com.gnk2so.chatroom.user.model.User;
 import com.gnk2so.chatroom.user.service.UserService;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +60,22 @@ public class RoomController extends BaseController {
         String path = format("/rooms/%s", savedRoom.getChannel());
         return ResponseEntity.created(getURI(path)).build();
     }
+
+
+    @GetMapping
+    @ApiOperation(
+        value = "Get page rooms",
+        authorizations = { @Authorization(value="JWT") })
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 401, message = "Invalid/Expired token"),
+        @ApiResponse(code = 403, message = "Don't have permission")
+    })
+    public ResponseEntity<Page<Room>> getPageRoom(PageRoomFilter filter) {
+        Page<Room> page = roomService.findAll(filter);
+        return ResponseEntity.ok(page);
+    }
+    
 
     @PutMapping("/{id}/join")
     @ApiOperation(

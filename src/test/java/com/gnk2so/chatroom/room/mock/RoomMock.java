@@ -1,5 +1,6 @@
 package com.gnk2so.chatroom.room.mock;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +36,14 @@ public class RoomMock {
         Room room = Room.privateRoom(title, password);
         room.add(firstParticipant);
         return room;
+    }
+
+    public static List<Room> buildList(int size) {
+        List<Room> rooms = new ArrayList<>();
+        for (int index = 0; index < size; index++) {
+            rooms.add(Room.publicRoom("Dev room " + index));
+        }
+        return rooms;
     }
 
     

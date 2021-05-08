@@ -3,6 +3,7 @@ package com.gnk2so.chatroom.room.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -10,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import com.gnk2so.chatroom.room.controlller.filter.PageRoomFilter;
 import com.gnk2so.chatroom.room.exception.RoomNotFoundException;
 import com.gnk2so.chatroom.room.mock.RoomMock;
 import com.gnk2so.chatroom.room.model.Room;
@@ -19,6 +21,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 public class RoomServiceTest {
@@ -52,6 +57,29 @@ public class RoomServiceTest {
         assertEquals(room.getType(), savedRoom.getType());
         assertEquals(room.getParticipants(), savedRoom.getParticipants());
     }
+
+    @Test
+    public void shouldReturnEmptyPageRoomWhenNotFindRoom() {
+        Page<Room> pageRooms = new PageImpl<>(RoomMock.buildList(0));
+        when(repository.findAll(any(Pageable.class))).thenReturn(pageRooms);
+
+        Page<Room> gettedPage = service.findAll(new PageRoomFilter());
+
+        assertEquals(pageRooms, gettedPage);
+        assertTrue(gettedPage.isEmpty());
+    }
+
+    @Test
+    public void shouldReturnFilledPageRoomWhenFindRoomsSuccessfully() {
+        Page<Room> pageRooms = new PageImpl<>(RoomMock.buildList(5));
+        when(repository.findAll(any(Pageable.class))).thenReturn(pageRooms);
+
+        Page<Room> gettedPage = service.findAll(new PageRoomFilter());
+
+        assertEquals(pageRooms, gettedPage);
+        assertEquals(5, gettedPage.getNumberOfElements());
+    }
+
     
     @Test
     public void shouldReturnRoomWhenFindRoomByChannelSuccessfully() {
